@@ -1,11 +1,609 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Pasha Site</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Фотопечать — быстро и качественно</title>
+  <meta name="description" content="Фотопечать, фото на документы, фотокниги, холсты и сувениры. Быстрое изготовление, доставка, помощь с макетами." />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --muted:#a9b4d0;
+      --text:#eef2ff;
+      --accent:#7c3aed;
+      --accent2:#22c55e;
+      --stroke:rgba(255,255,255,.10);
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 10%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(900px 650px at 85% 20%, rgba(34,197,94,.18), transparent 55%),
+        linear-gradient(180deg, #070b14 0%, #0b1220 45%, #070b14 100%);
+      line-height:1.55;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1120px; margin:0 auto; padding:0 18px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(7,11,20,.55);
+      border-bottom:1px solid var(--stroke);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:36px;height:36px;border-radius:14px;
+      background: linear-gradient(135deg, var(--accent), #3b82f6);
+      box-shadow: 0 10px 30px rgba(124,58,237,.35);
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.18);
+      flex:0 0 auto;
+    }
+    .logo span{font-weight:900}
+    .nav-links{
+      display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end;
+      font-weight:600; color:var(--muted); font-size:14px;
+    }
+    .nav-links a{padding:8px 10px; border-radius:12px}
+    .nav-links a:hover{background:rgba(255,255,255,.06); color:var(--text)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:700;
+      gap:10px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+      transition: transform .12s ease, background .12s ease;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.10)}
+    .btn.primary{
+      background: linear-gradient(135deg, var(--accent), #3b82f6);
+      border-color: rgba(255,255,255,.22);
+    }
+    .btn.primary:hover{background: linear-gradient(135deg, #6d28d9, #2563eb)}
+    .btn.success{
+      background: linear-gradient(135deg, var(--accent2), #16a34a);
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn.success:hover{background: linear-gradient(135deg, #16a34a, #15803d)}
+    .hero{
+      padding:54px 0 26px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.25fr .9fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    .card{
+      background: rgba(17,26,46,.72);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{padding:26px}
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-weight:700; font-size:13px;
+    }
+    .kicker b{color:var(--text)}
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height:1.08;
+      letter-spacing:-.6px;
+    }
+    .lead{
+      color:var(--muted);
+      font-size:16px;
+      margin:0 0 16px;
+    }
+    .hero-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .mini{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top:18px;
+    }
+    .pill{
+      padding:12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+    }
+    .pill .t{font-weight:800}
+    .pill .s{color:var(--muted); font-size:13px; margin-top:4px}
+    .side-card{padding:18px}
+    .side-top{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .badge{
+      font-size:12px; font-weight:800;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+    }
+    .side-card h3{margin:10px 0 8px; font-size:18px}
+    .list{margin:0; padding:0; list-style:none; display:grid; gap:10px}
+    .li{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px;
+      border-radius:16px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent2), #60a5fa);
+      margin-top:6px; flex:0 0 auto;
+    }
+    section{padding:34px 0}
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:24px;
+      letter-spacing:-.3px;
+    }
+    .section-title p{margin:0; color:var(--muted)}
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .service{padding:18px}
+    .service h3{margin:8px 0 6px}
+    .service p{margin:0; color:var(--muted); font-size:14px}
+    .tag{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(124,58,237,.18);
+      border:1px solid rgba(124,58,237,.28);
+      color: #ddd6fe;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .pricing{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:14px;
+    }
+    .price-card{padding:18px; position:relative; overflow:hidden}
+    .price-card.featured{
+      border-color: rgba(124,58,237,.35);
+      box-shadow: 0 20px 55px rgba(124,58,237,.20);
+      transform: translateY(-2px);
+    }
+    .price{
+      font-size:28px; font-weight:900; margin:8px 0 6px;
+    }
+    .price small{font-size:13px; color:var(--muted); font-weight:700}
+    .price-list{margin:12px 0 0; padding:0; list-style:none; display:grid; gap:8px; color:var(--muted)}
+    .price-list li{display:flex; gap:10px; align-items:flex-start}
+    .check{
+      width:18px; height:18px; border-radius:6px;
+      background: rgba(34,197,94,.18);
+      border:1px solid rgba(34,197,94,.35);
+      display:grid; place-items:center;
+      flex:0 0 auto; margin-top:2px;
+      font-weight:900; color:#bbf7d0;
+      font-size:12px;
+    }
+
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
+    .step{padding:16px}
+    .step .n{
+      width:34px; height:34px; border-radius:14px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      font-weight:900;
+    }
+    .step h4{margin:10px 0 6px}
+    .step p{margin:0; color:var(--muted); font-size:14px}
+
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
+    .ph{
+      aspect-ratio: 1 / 1;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+      display:grid;
+      place-items:center;
+      color: var(--muted);
+      font-weight:800;
+      text-align:center;
+      padding:12px;
+    }
+    .reviews{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
+    .review{padding:16px}
+    .review p{margin:0 0 10px; color:var(--muted)}
+    .review .who{font-weight:900}
+    .review .meta{color:var(--muted); font-size:13px}
+
+    .contact{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .contact-card{padding:18px}
+    .contact-card h3{margin:0 0 10px}
+    .contact-line{display:flex; gap:10px; align-items:center; margin:10px 0; color:var(--muted)}
+    .contact-line b{color:var(--text)}
+    .form{
+      display:grid; gap:10px; margin-top:10px;
+    }
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      outline:none;
+    }
+    textarea{min-height:110px; resize:vertical}
+    .fine{color:var(--muted); font-size:12px; margin-top:10px}
+    footer{
+      padding:26px 0 34px;
+      color: var(--muted);
+      border-top:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+    }
+    .footer-grid{
+      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; align-items:center;
+    }
+
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+      .mini{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .pricing{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr 1fr}
+      .gallery{grid-template-columns:1fr 1fr}
+      .reviews{grid-template-columns:1fr}
+      .contact{grid-template-columns:1fr}
+      .nav-links{display:none}
+    }
+  </style>
 </head>
 <body>
-  <h1>Привет, это мой первый сайт 🚀</h1>
-  <p>Я учусь программировать.</p>
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo"><span>📸</span></div>
+        <div>
+          <div style="font-size:14px; font-weight:900;">Pasha Print</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:700;">Фотопечать • Фото на документы • Сувениры</div>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Навигация">
+        <a href="#services">Услуги</a>
+        <a href="#prices">Цены</a>
+        <a href="#how">Как заказать</a>
+        <a href="#gallery">Примеры</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+
+      <a class="btn primary" href="#contact">Сделать заказ</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="card hero-card">
+          <div class="kicker">⏱️ <b>В тот же день</b> • печать фото и срочные заказы</div>
+          <h1>Фотопечать для семьи и бизнеса — быстро, аккуратно, с доставкой</h1>
+          <p class="lead">
+            Печатаем фото 10×15, 15×20, 20×30, холсты, фотокниги и сувениры.
+            Поможем с макетом, поправим яркость и кадрирование — чтобы результат радовал.
+          </p>
+          <div class="hero-actions">
+            <!-- ЗАМЕНИ ССЫЛКИ НИЖЕ НА СВОИ -->
+            <a class="btn success" href="https://wa.me/79990000000" target="_blank" rel="noreferrer">WhatsApp</a>
+            <a class="btn" href="https://t.me/username" target="_blank" rel="noreferrer">Telegram</a>
+            <a class="btn" href="mailto:print@example.com">Email</a>
+          </div>
+
+          <div class="mini">
+            <div class="pill">
+              <div class="t">📦 Доставка</div>
+              <div class="s">По городу / самовывоз</div>
+            </div>
+            <div class="pill">
+              <div class="t">🎨 Помощь с макетами</div>
+              <div class="s">Подскажем и подготовим</div>
+            </div>
+            <div class="pill">
+              <div class="t">✨ Качество</div>
+              <div class="s">Плотная фотобумага</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card side-card">
+          <div class="side-top">
+            <div class="badge">🔥 Популярно</div>
+            <div class="badge">⭐ 4.9 / 5</div>
+          </div>
+          <h3>Самые частые заказы</h3>
+          <ul class="list">
+            <li class="li"><span class="dot"></span><div><b>Фото 10×15</b><div style="color:var(--muted); font-size:13px;">глянец/мат, от 10 шт</div></div></li>
+            <li class="li"><span class="dot"></span><div><b>Фото на документы</b><div style="color:var(--muted); font-size:13px;">под требования, ретушь</div></div></li>
+            <li class="li"><span class="dot"></span><div><b>Холст 30×40</b><div style="color:var(--muted); font-size:13px;">натяжка на подрамник</div></div></li>
+            <li class="li"><span class="dot"></span><div><b>Фотокнига</b><div style="color:var(--muted); font-size:13px;">премиум подарок</div></div></li>
+          </ul>
+          <div style="margin-top:12px">
+            <a class="btn primary" href="#prices">Смотреть цены</a>
+          </div>
+          <p class="fine">Подсказка: заменишь контакты — кнопки начнут вести к тебе.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Услуги</h2>
+            <p>Печатаем, оформляем, подготавливаем к идеальному результату</p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="card service">
+            <span class="tag">Фото</span>
+            <h3>Печать фото</h3>
+            <p>10×15, 15×20, 20×30 и другие форматы. Мат/глянец. Цветокоррекция по запросу.</p>
+          </div>
+          <div class="card service">
+            <span class="tag">Документы</span>
+            <h3>Фото на документы</h3>
+            <p>Срочно и по правилам. Кадрирование, фон, лёгкая ретушь, печать комплектами.</p>
+          </div>
+          <div class="card service">
+            <span class="tag">Подарки</span>
+            <h3>Холсты и сувениры</h3>
+            <p>Холст на подрамнике, кружки, магниты. Идеально для подарка и корпоративов.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="prices">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Цены</h2>
+            <p>Поставь свои реальные цены — эти значения примерные</p>
+          </div>
+        </div>
+
+        <div class="pricing">
+          <div class="card price-card">
+            <div class="badge">Быстро</div>
+            <h3 style="margin:10px 0 0;">Фото 10×15</h3>
+            <div class="price">от 15₽ <small>/шт</small></div>
+            <ul class="price-list">
+              <li><span class="check">✓</span>Мат или глянец</li>
+              <li><span class="check">✓</span>Срок: 1–2 часа</li>
+              <li><span class="check">✓</span>Скидка от 50 шт</li>
+            </ul>
+            <div style="margin-top:14px"><a class="btn" href="#contact">Заказать</a></div>
+          </div>
+
+          <div class="card price-card featured">
+            <div class="badge">Лучший выбор</div>
+            <h3 style="margin:10px 0 0;">Фото на документы</h3>
+            <div class="price">от 350₽ <small>/комплект</small></div>
+            <ul class="price-list">
+              <li><span class="check">✓</span>Под требования</li>
+              <li><span class="check">✓</span>Ретушь + фон</li>
+              <li><span class="check">✓</span>Срочно за 10–15 мин</li>
+            </ul>
+            <div style="margin-top:14px"><a class="btn primary" href="#contact">Записаться</a></div>
+          </div>
+
+          <div class="card price-card">
+            <div class="badge">Подарок</div>
+            <h3 style="margin:10px 0 0;">Холст 30×40</h3>
+            <div class="price">от 1990₽ <small>/шт</small></div>
+            <ul class="price-list">
+              <li><span class="check">✓</span>Натяжка на подрамник</li>
+              <li><span class="check">✓</span>Предпросмотр макета</li>
+              <li><span class="check">✓</span>Срок: 1–3 дня</li>
+            </ul>
+            <div style="margin-top:14px"><a class="btn" href="#contact">Хочу холст</a></div>
+          </div>
+        </div>
+
+        <p class="fine">Совет: добавь прайс-таблицу в отдельный файл или Google-таблицу — и поставь ссылку здесь.</p>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Как заказать</h2>
+            <p>4 шага — и готово</p>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="card step">
+            <div class="n">1</div>
+            <h4>Отправь фото</h4>
+            <p>В WhatsApp/Telegram или принеси на флешке.</p>
+          </div>
+          <div class="card step">
+            <div class="n">2</div>
+            <h4>Уточним детали</h4>
+            <p>Формат, бумага, количество, обрезка/поля.</p>
+          </div>
+          <div class="card step">
+            <div class="n">3</div>
+            <h4>Предпросмотр</h4>
+            <p>Покажем макет (если нужно) и согласуем.</p>
+          </div>
+          <div class="card step">
+            <div class="n">4</div>
+            <h4>Печать и выдача</h4>
+            <p>Самовывоз или доставка — как удобно.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Примеры работ</h2>
+            <p>Пока заглушки — потом заменишь на свои фото</p>
+          </div>
+        </div>
+
+        <div class="gallery">
+          <div class="ph">Фото 10×15<br> (вставь картинку)</div>
+          <div class="ph">Фото на документы<br> (пример)</div>
+          <div class="ph">Холст<br> (пример)</div>
+          <div class="ph">Сувениры<br> (пример)</div>
+        </div>
+
+        <p class="fine">Как вставить фото: добавь файлы в репозиторий (папка <b>img</b>) и замени заглушки на теги &lt;img&gt;.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Отзывы</h2>
+            <p>Поставь реальные отзывы — это сильно повышает доверие</p>
+          </div>
+        </div>
+
+        <div class="reviews">
+          <div class="card review">
+            <p>«Сделали срочно фото на документы за 10 минут — идеально!»</p>
+            <div class="who">Алина</div>
+            <div class="meta">Фото на документы</div>
+          </div>
+          <div class="card review">
+            <p>«Холст получился очень яркий, ещё и макет поправили. Спасибо!»</p>
+            <div class="who">Игорь</div>
+            <div class="meta">Печать на холсте</div>
+          </div>
+          <div class="card review">
+            <p>«Печатали 200 фото для мероприятия — быстро и без брака.»</p>
+            <div class="who">Мария</div>
+            <div class="meta">Оптовая печать</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Контакты</h2>
+            <p>Сделаем заказ в переписке за 2–3 минуты</p>
+          </div>
+        </div>
+
+        <div class="contact">
+          <div class="card contact-card">
+            <h3>Напиши нам</h3>
+            <!-- ЗАМЕНИ ДАННЫЕ НИЖЕ НА СВОИ -->
+            <div class="contact-line">📍 <b>Адрес:</b>&nbsp;<span>Твой город, улица, дом</span></div>
+            <div class="contact-line">🕒 <b>Время:</b>&nbsp;<span>Пн–Сб 10:00–20:00</span></div>
+            <div class="contact-line">📞 <b>Тел:</b>&nbsp;<span>+7 (999) 000-00-00</span></div>
+
+            <div class="hero-actions" style="margin-top:12px">
+              <a class="btn success" href="https://wa.me/79990000000" target="_blank" rel="noreferrer">WhatsApp</a>
+              <a class="btn" href="https://t.me/username" target="_blank" rel="noreferrer">Telegram</a>
+              <a class="btn" href="mailto:print@example.com">Email</a>
+            </div>
+
+            <p class="fine">Если хочешь форму, которая реально отправляет заявки — можно подключить Google Forms / Formspree / Telegram-бота.</p>
+          </div>
+
+          <div class="card contact-card">
+            <h3>Заявка (черновик)</h3>
+            <p style="margin:0; color:var(--muted); font-size:14px;">
+              На GitHub Pages формы без бэкенда не отправляют. Но ты можешь оставить это как шаблон или подключить сервис.
+            </p>
+
+            <form class="form" onsubmit="event.preventDefault(); alert('Супер! Эта форма пока не отправляет заявки. Напиши в WhatsApp/Telegram — ссылки слева 😊');">
+              <input name="name" placeholder="Имя" autocomplete="name" />
+              <input name="phone" placeholder="Телефон/ник" />
+              <textarea name="msg" placeholder="Что печатаем? Формат, количество, сроки"></textarea>
+              <button class="btn primary" type="submit">Отправить</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>© <span id="y"></span> Pasha Print. Все права защищены.</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap">
+        <a class="btn" href="#services">Услуги</a>
+        <a class="btn" href="#prices">Цены</a>
+        <a class="btn" href="#contact">Контакты</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
